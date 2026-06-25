@@ -13,6 +13,9 @@ import SalonCard from "./components/SalonCard";
 import BookingModal from "./components/BookingModal";
 import Toast from "./components/Toast";
 import GlossAIConcierge from "./components/GlossAIConcierge";
+import AppointmentsDrawer from "./components/AppointmentsDrawer";
+import StyleMatchModal from "./components/StyleMatchModal";
+import type { BookingRecord } from "./data/bookings";
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,6 +23,8 @@ export default function App() {
   const [selectedSalon, setSelectedSalon] = useState<Salon | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [toastBookingId, setToastBookingId] = useState<string | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [styleMatchOpen, setStyleMatchOpen] = useState(false);
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
 
@@ -86,8 +91,8 @@ export default function App() {
     setModalOpen(false);
   };
 
-  const handleConfirmed = (bookingId: string) => {
-    setToastBookingId(bookingId);
+  const handleConfirmed = (booking: BookingRecord) => {
+    setToastBookingId(booking.id);
   };
 
   return (
@@ -98,6 +103,8 @@ export default function App() {
         activeCategory={activeCategory}
         onCategoryChange={setActiveCategory}
         categoryCounts={categoryCounts}
+        onOpenAppointments={() => setDrawerOpen(true)}
+        onOpenStyleMatch={() => setStyleMatchOpen(true)}
       />
 
       <Hero />
@@ -204,6 +211,19 @@ export default function App() {
       )}
 
       <GlossAIConcierge onBookNow={openBooking} />
+
+      <AppointmentsDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      />
+
+      {styleMatchOpen && (
+        <StyleMatchModal
+          salons={SALONS}
+          onBookNow={openBooking}
+          onClose={() => setStyleMatchOpen(false)}
+        />
+      )}
     </div>
   );
 }
