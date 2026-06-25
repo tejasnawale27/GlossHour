@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { SlidersHorizontal, SearchX } from "lucide-react";
+import { Analytics } from "@vercel/analytics/react";
 import {
   SALONS,
   CATEGORIES,
@@ -224,6 +225,8 @@ export default function App() {
           onClose={() => setStyleMatchOpen(false)}
         />
       )}
+
+      <Analytics />
     </div>
   );
 }
